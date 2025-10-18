@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: drs-monitor-agent
+  labels:
+    app: drs-monitor
+spec:
+  selector:
+    matchLabels:
+      name: drs-monitor-agent
+  template:
+    metadata:
+      labels:
+        name: drs-monitor-agent
+    spec:
+    hostNetwork: true 
+    dnsPolicy: ClusterFirstWithHostNet
+    terminationGracePeriodSeconds: 30
+    containers:
+    # Los siguientes son datos de ejemplo
+    - name: drs-monitor-agent
+      image: drs-monitor-agent:latest
+      ports:
+      - containerPort: 8080
+        name: metrics-port
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "256Mi" 
+          cpu: "500m"
